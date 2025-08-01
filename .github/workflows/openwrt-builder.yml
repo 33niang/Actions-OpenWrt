@@ -51,12 +51,10 @@ jobs:
     - name: Free up disk space
       run: |
         sudo rm -rf /usr/share/dotnet
-        sudo rm -rf /opt/ghc
-        sudo rm -rf "/usr/local/share/boost"
-        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-        sudo apt-get purge -y --auto-remove azure-cli gh* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
-        sudo apt-get autoremove -y
-        sudo apt-get clean
+        sudo docker image prune --all --force
+        sudo swapoff -a
+        sudo rm -f /swapfile
+        df -h
 
     - name: Clone source code
       working-directory: /workdir
@@ -139,7 +137,7 @@ jobs:
       run: |
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
-        [ ${UPLOAD_GOFILE} = true && ${{ steps.gofile.outputs.url }} ] && echo "🔗 [GoFile](${{ steps.gofile.outputs.url }})" >> release.txt
+        # [ ${UPLOAD_GOFILE} = true && ${{ steps.gofile.outputs.url }} ] && echo "🔗 [GoFile](${{ steps.gofile.outputs.url }})" >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
