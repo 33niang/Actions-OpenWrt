@@ -18,3 +18,8 @@
 
 # Modify hostname
 #sed -i 's/OpenWrt/P3TERX-Router/g' package/base-files/files/bin/config_generate
+
+# 添加 Argon 主题
+git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
+# 添加 OpenClash 插件
+git clone https://github.com/vernesong/OpenClash.git package/luci-app-openclash
